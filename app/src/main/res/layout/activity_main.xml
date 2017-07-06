@@ -21,6 +21,14 @@
         android:onClick="upload"
         android:text="UPLOAD" />
 
+    <Button
+        android:id="@+id/download_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="30dp"
+        android:onClick="download"
+        android:text="DOWNLOAD" />
+
     <ImageView
         android:id="@+id/image_main"
         android:layout_width="100dp"

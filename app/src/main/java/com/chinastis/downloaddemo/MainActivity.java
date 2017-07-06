@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap;
 
     private ProgressBar progressBar;
+
+    Handler handler = new Handler();
+
+    private String downloadUrl = "http://img.taopic.com/uploads/allimg/121120/240486-12112015205437.jpg";
+    private String filePath = Environment.getExternalStorageDirectory().getPath()+ File.separator+"佟丽娅";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,26 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setProgress((int) (100 - remainingBytes/totalBytes));
             }
         });
+    }
+
+    public void download(View view) {
+        ProgressDownloadFile.run(new ProgressListener() {
+            @Override
+            public void onProgress(long totalBytes, long remainingBytes, boolean done) {
+                if(done){
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            photo.setImageBitmap(BitmapFactory.decodeFile(filePath+File.separator+"yaya.jpg"));
+                        }
+                    });
+
+
+                }
+            }
+        },downloadUrl,filePath);
+
     }
 
     public void pick(View view) {
@@ -69,4 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }

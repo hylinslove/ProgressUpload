@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         ProgressDownloadFile.run(new ProgressListener() {
             @Override
             public void onProgress(long totalBytes, long remainingBytes, boolean done) {
+                progressBar.setProgress((int) (100 - remainingBytes/(totalBytes+1)));
                 if(done){
 
                     handler.post(new Runnable() {

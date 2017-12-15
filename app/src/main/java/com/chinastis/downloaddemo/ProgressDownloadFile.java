@@ -27,24 +27,28 @@ import okio.Source;
 
 public class ProgressDownloadFile {
 
-    private static OkHttpClient okHttpClient = new OkHttpClient() ;
+    private static OkHttpClient okHttpClient ;
 
     private static BufferedSource source;
 
     static void run (final ProgressListener listener, String url, final String filePath) {
 
-//        Interceptor interceptor = new Interceptor() {
-//            @Override
-//            public Response intercept(Chain chain) throws IOException {
-//
-//                Response originalResponse = chain.proceed(chain.request());
-//
-//                return  originalResponse.newBuilder()
-//                        .body(createCustemResponsBody(originalResponse.body(),listener))
-//                        .build();
-//
-//            }
-//        };
+        Interceptor interceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+
+                Response originalResponse = chain.proceed(chain.request());
+
+                return  originalResponse.newBuilder()
+                        .body(createCustemResponsBody(originalResponse.body(),listener))
+                        .build();
+
+            }
+        };
+
+        if(okHttpClient == null) {
+            okHttpClient = new OkHttpClient.Builder().addNetworkInterceptor(interceptor).build();
+        }
 //        okHttpClient.networkInterceptors().add(interceptor);
 
         Request request = new Request.Builder()
